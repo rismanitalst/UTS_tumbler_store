@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "355640515279",
+    "project_id": "tumbler-store",
+    "storage_bucket": "tumbler-store.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355640515279:android:a1dc65c51c1049b9d5b5ba",
+        "android_client_info": {
+          "package_name": "com.example.tumbler_store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355640515279-ttaro14qarunoo0448pvhnj41vh8m251.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAke3uCRhE_R13oVqO3FDMUhHI_KFXmczk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "355640515279-ttaro14qarunoo0448pvhnj41vh8m251.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
