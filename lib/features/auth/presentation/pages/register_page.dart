@@ -49,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(auth.errorMessage ?? 'Pendaftaran gagal'),
-          backgroundColor: Colors.red,
+          backgroundColor: const Color(0xFFE8829A),
         ),
       );
     }
@@ -63,6 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
       isLoading: isLoading,
       message: 'Mendaftarkan akun...',
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -70,22 +71,24 @@ class _RegisterPageState extends State<RegisterPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  const SizedBox(height: 32),
-
-                  // Widget reusable: AuthHeader
-                  const AuthHeader(
-                    icon: Icons.person_add_alt_1,
-                    title: 'Buat Akun Baru',
-                    subtitle: 'Lengkapi data diri Anda untuk mendaftar',
-                  ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 5),
+                    Image.asset(
+                      'assets/icons/loopy_tumbler.png',
+                      height: 250,
+                    ),
+                    const SizedBox(height: 8),
+                    const AuthHeader(
+                      title: 'Buat Akun Baru',
+                      subtitle: 'Lengkapi data diri Anda untuk mendaftar',
+                    ),
+                    const SizedBox(height: 16),
 
                   // Widget reusable: CustomTextField
                   CustomTextField(
                     label: 'Nama Lengkap',
                     hint: 'Masukkan nama lengkap',
                     controller: _nameCtrl,
-                    prefixIcon: const Icon(Icons.person_outline),
+                    prefixIcon: const Icon(Icons.person_outline, color: Color(0xFFE8829A)),
                     validator: (v) =>
                         (v?.isEmpty ?? true) ? 'Nama wajib diisi' : null,
                   ),
@@ -96,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     hint: 'contoh@email.com',
                     controller: _emailCtrl,
                     keyboardType: TextInputType.emailAddress,
-                    prefixIcon: const Icon(Icons.email_outlined),
+                    prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFFE8829A)),
                     validator: (v) {
                       if (v?.isEmpty ?? true) return 'Email wajib diisi';
                       if (!EmailValidator.validate(v!))
@@ -111,10 +114,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     hint: 'Minimal 8 karakter',
                     controller: _passCtrl,
                     obscureText: !_showPass,
-                    prefixIcon: const Icon(Icons.lock_outline),
+                    prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFFE8829A)),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _showPass ? Icons.visibility_off : Icons.visibility,
+                        color: const Color(0xFFE8829A),
                       ),
                       onPressed: () => setState(() => _showPass = !_showPass),
                     ),
@@ -129,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     hint: 'Ulangi password',
                     controller: _pass2Ctrl,
                     obscureText: !_showPass,
-                    prefixIcon: const Icon(Icons.lock_outline),
+                    prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFFE8829A)),
                     validator: (v) =>
                         v != _passCtrl.text ? 'Password tidak cocok' : null,
                   ),
@@ -156,7 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: const Text(
                           'Masuk',
                           style: TextStyle(
-                            color: Color(0xFF1565C0),
+                            color: Color(0xFFE8829A),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
