@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tumbler_store/core/routes/app_router.dart';
 import 'package:tumbler_store/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tumbler_store/features/dashboard/data/models/product_models.dart';
+import 'package:tumbler_store/features/dashboard/presentation/pages/product_detail_page.dart';
 
 import '../providers/product_provider.dart';
 
@@ -43,7 +45,7 @@ class _DashboardPageState extends State<DashboardPage> {
     super.dispose();
   }
 
-  List _filteredProducts(List products) {
+  List<ProductModel> _filteredProducts(List<ProductModel> products) {
     return products.where((p) {
       final matchSearch = p.name.toLowerCase().contains(_searchQuery) ||
           p.category.toLowerCase().contains(_searchQuery);
@@ -53,8 +55,8 @@ class _DashboardPageState extends State<DashboardPage> {
     }).toList();
   }
 
-  List<String> _getCategories(List products) {
-    final cats = products.map((p) => p.category as String).toSet().toList();
+  List<String> _getCategories(List<ProductModel> products) {
+    final cats = products.map((p) => p.category).toSet().toList();
     return ['Semua', ...cats];
   }
 
@@ -73,7 +75,7 @@ class _DashboardPageState extends State<DashboardPage> {
         auth.firebaseUser?.displayName?.split(' ').first ?? 'User';
     final filtered = product.status == ProductStatus.loaded
         ? _filteredProducts(product.products)
-        : <dynamic>[];
+        : <ProductModel>[];
 
     return Scaffold(
       backgroundColor: _bg,
@@ -401,7 +403,7 @@ class _DashboardPageState extends State<DashboardPage> {
 }
 
 class _ProductCard extends StatelessWidget {
-  final dynamic p;
+  final ProductModel p;
   const _ProductCard({required this.p});
 
   static const _pink = Color(0xFFE8829A);
@@ -410,93 +412,101 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.pink.withValues(alpha: 0.06),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ProductDetailPage(product: p),
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(20)),
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: Image.network(
-                p.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  color: _pinkLight,
-                  child: const Center(
-                    child: Icon(Icons.local_drink_outlined,
-                        size: 36, color: _pink),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.pink.withValues(alpha: 0.06),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(20)),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Image.network(
+                  p.imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    color: _pinkLight,
+                    child: const Center(
+                      child: Icon(Icons.local_drink_outlined,
+                          size: 36, color: _pink),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    p.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      color: _textPrimary,
-                      letterSpacing: -0.1,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Rp ${p.price.toStringAsFixed(0)}',
-                        style: const TextStyle(
-                          color: _pink,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                          letterSpacing: -0.2,
-                        ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      p.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        color: _textPrimary,
+                        letterSpacing: -0.1,
                       ),
-                      const SizedBox(height: 6),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: _pinkLight,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          p.category,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Rp ${p.price.toStringAsFixed(0)}',
                           style: const TextStyle(
-                            fontSize: 10,
                             color: _pink,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                            letterSpacing: -0.2,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        const SizedBox(height: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: _pinkLight,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            p.category,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: _pink,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
