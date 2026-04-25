@@ -62,7 +62,10 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Email verifikasi sudah dikirim ulang')),
+      const SnackBar(
+        content: Text('Email verifikasi sudah dikirim ulang'),
+        backgroundColor: Color(0xFFE8829A),
+      ),
     );
   }
 
@@ -71,6 +74,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     final user = context.watch<AuthProvider>().firebaseUser;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -81,9 +85,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
               const AuthHeader(
                 icon: Icons.mark_email_unread_outlined,
                 title: 'Verifikasi Email Kamu',
-                subtitle:
-                    'Kami sudah mengirim link verifikasi ke email di bawah ini.',
-                iconColor: Colors.orange,
+                subtitle: 'Kami sudah mengirim link verifikasi ke email di bawah ini.',
+                iconColor: Color(0xFFE8829A),
               ),
               const SizedBox(height: 24),
 
@@ -115,7 +118,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                   const SizedBox(
                     width: 16,
                     height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFFE8829A)),
                   ),
                   const SizedBox(width: 12),
                   Text(
