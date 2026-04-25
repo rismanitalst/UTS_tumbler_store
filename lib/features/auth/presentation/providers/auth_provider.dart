@@ -23,14 +23,45 @@ class AuthProvider extends ChangeNotifier {
   String? _backendToken;
   String? _errorMessage;
 
-  // ─── Getters ─────────────────────────────────────────────
   AuthStatus get status => _status;
   User? get firebaseUser => _firebaseUser;
   String? get backendToken => _backendToken;
   String? get errorMessage => _errorMessage;
   bool get isLoading => _status == AuthStatus.loading;
 
-  // ─── REGISTER ────────────────────────────────────────────
+  AuthProvider() {
+    _init();
+  }
+
+  Future<void> _init() async {
+    final user = _auth.currentUser;
+
+    if (user == null) {
+      _status = AuthStatus.unauthenticated;
+      notifyListeners();
+      return;
+    }
+
+    if (!user.emailVerified) {
+      _firebaseUser = user;
+      _status = AuthStatus.emailNotVerified;
+      notifyListeners();
+      return;
+    }
+
+    final savedToken = await SecureStorageService.getToken();
+    if (savedToken != null) {
+      _firebaseUser = user;
+      _backendToken = savedToken;
+      _status = AuthStatus.authenticated;
+      notifyListeners();
+      return;
+    }
+
+    _firebaseUser = user;
+    await _verifyTokenToBackend();
+  }
+
   Future<bool> register({
     required String name,
     required String email,
@@ -59,7 +90,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // ─── CHECK EMAIL VERIFIED (Polling) ──────────────────────
   Future<bool> checkEmailVerified() async {
     try {
       await _firebaseUser?.reload();
@@ -76,15 +106,12 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // ─── VERIFY TOKEN KE BACKEND ─────────────────────────────
   Future<bool> _verifyTokenToBackend() async {
     try {
       await _firebaseUser?.reload();
       _firebaseUser = _auth.currentUser;
 
       final firebaseToken = await _firebaseUser?.getIdToken(true);
-
-      print('TOKEN: $firebaseToken');
 
       final response = await DioClient.instance.post(
         ApiConstants.verifyToken,
@@ -104,13 +131,11 @@ class AuthProvider extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      print('VERIFY ERROR: $e');
       _setError('Gagal verifikasi ke server');
       return false;
     }
   }
 
-  // ─── LOGIN EMAIL ─────────────────────────────────────────
   Future<bool> loginWithEmail({
     required String email,
     required String password,
@@ -138,7 +163,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // ─── LOGIN GOOGLE ────────────────────────────────────────
   Future<bool> loginWithGoogle() async {
     try {
       _setLoading();
@@ -166,15 +190,16 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // ─── RESEND EMAIL ────────────────────────────────────────
   Future<void> resendVerificationEmail() async {
     await _firebaseUser?.sendEmailVerification();
   }
 
-  // ─── LOGOUT ──────────────────────────────────────────────
   Future<void> logout() async {
+    try {
+      await _googleSignIn.signOut();
+    } catch (_) {}
+
     await _auth.signOut();
-    await _googleSignIn.signOut();
     await SecureStorageService.clearAll();
 
     _firebaseUser = null;
@@ -184,7 +209,6 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ─── HELPERS ─────────────────────────────────────────────
   void _setLoading() {
     _status = AuthStatus.loading;
     _errorMessage = null;
