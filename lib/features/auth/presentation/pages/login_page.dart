@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                     hint: 'contoh@email.com',
                     controller: _emailCtrl,
                     keyboardType: TextInputType.emailAddress,
-                    prefixIcon: const Icon(Icons.email_outlined),
+                    prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFFE8829A)),
                     validator: (v) {
                       if (v?.isEmpty ?? true) return 'Email wajib diisi';
                       if (!EmailValidator.validate(v!)) {
@@ -143,10 +143,11 @@ class _LoginPageState extends State<LoginPage> {
                     hint: 'Masukkan password',
                     controller: _passCtrl,
                     obscureText: !_showPass,
-                    prefixIcon: const Icon(Icons.lock_outline),
+                    prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFFE8829A)),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _showPass ? Icons.visibility_off : Icons.visibility,
+                        color: const Color(0xFFE8829A),
                       ),
                       onPressed: () => setState(() => _showPass = !_showPass),
                     ),
@@ -158,7 +159,10 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () => _showForgotPasswordDialog(context),
-                      child: const Text('Lupa Password?'),
+                      child: const Text(
+                        'Lupa Password?',
+                        style: TextStyle(color: Color(0xFFE8829A)),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -187,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text(
                           'Daftar',
                           style: TextStyle(
-                            color: Color(0xFF1565C0),
+                            color: Color(0xFFE8829A),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
