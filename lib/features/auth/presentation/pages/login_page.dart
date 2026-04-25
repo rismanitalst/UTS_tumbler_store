@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const SizedBox(height: 5),
                   Image.asset(
-                    'assets/icons/loopy_tumbler.png',
+                    'assets/icons/loopy_tumbler_store.png',
                     height: 250,
                   ),
                   const SizedBox(height: 10),
