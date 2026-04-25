@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(auth.errorMessage ?? 'Login gagal'),
-          backgroundColor: Colors.red,
+          backgroundColor: const Color(0xFFE8829A),
         ),
       );
     }
@@ -108,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
       isLoading: isLoading,
       message: 'Masuk ke akun...',
       child: Scaffold(
+        backgroundColor: const Color(0xFFFFF0F5),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
