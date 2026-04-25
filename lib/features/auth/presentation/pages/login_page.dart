@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
       isLoading: isLoading,
       message: 'Masuk ke akun...',
       child: Scaffold(
-        backgroundColor: const Color(0xFFFFF0F5),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -116,10 +116,14 @@ class _LoginPageState extends State<LoginPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 5),
+                  Image.asset(
+                    'assets/icons/loopy_tumbler.png',
+                    height: 250,
+                  ),
+                  const SizedBox(height: 10),
                   const AuthHeader(
-                    icon: Icons.lock_open_outlined,
-                    title: 'Selamat Datang',
+                    title: 'Tumbler Store',
                     subtitle: 'Masuk ke akun Anda untuk melanjutkan',
                   ),
                   const SizedBox(height: 32),
