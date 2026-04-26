@@ -148,8 +148,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 16),
 
                   // Link ke Login
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Wrap(
+                    alignment: WrapAlignment.center,
                     children: [
                       const Text('Sudah punya akun? '),
                       GestureDetector(

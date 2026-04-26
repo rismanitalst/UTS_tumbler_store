@@ -91,20 +91,22 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<bool> checkEmailVerified() async {
-    try {
-      await _firebaseUser?.reload();
-      _firebaseUser = _auth.currentUser;
+  try {
+    await _auth.currentUser?.reload();
+    _firebaseUser = _auth.currentUser;
 
-      if (_firebaseUser?.emailVerified ?? false) {
-        return await _verifyTokenToBackend();
-      }
+    await _firebaseUser?.getIdToken(true);
 
-      return false;
-    } catch (e) {
-      _setError('Gagal cek verifikasi email');
-      return false;
+    if (_firebaseUser?.emailVerified ?? false) {
+      return await _verifyTokenToBackend();
     }
+
+    return false;
+  } catch (e) {
+    _setError('Gagal cek verifikasi email');
+    return false;
   }
+}
 
   Future<bool> _verifyTokenToBackend() async {
     try {
