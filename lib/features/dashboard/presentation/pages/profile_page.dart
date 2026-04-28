@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tumbler_store/features/auth/presentation/providers/auth_provider.dart';
+import 'package:tumbler_store/core/routes/app_router.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -167,6 +168,70 @@ class ProfilePage extends StatelessWidget {
                         label: 'Bergabung Sejak',
                         value:
                             '${createdAt.day}/${createdAt.month}/${createdAt.year}',
+                      ),
+                      const SizedBox(height: 32),
+                      const Text(
+                        'Lainnya',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                          color: _textPrimary,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      GestureDetector(
+                        onTap: () async {
+                          final auth = context.read<AuthProvider>();
+                          await auth.logout();
+                          if (!context.mounted) return;
+                          Navigator.pushReplacementNamed(context, AppRouter.login);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.pink.withValues(alpha: 0.06),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: _pinkLight,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Icon(
+                                  Icons.logout_rounded,
+                                  color: _pink,
+                                  size: 18,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Text(
+                                'Logout',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: _pink,
+                                ),
+                              ),
+                              const Spacer(),
+                              const Icon(
+                                Icons.chevron_right_rounded,
+                                color: Color(0xFF9E9E9E),
+                                size: 20,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ],
