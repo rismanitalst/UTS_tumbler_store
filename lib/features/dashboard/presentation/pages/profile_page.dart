@@ -10,7 +10,6 @@ class ProfilePage extends StatelessWidget {
   static const _pinkLight = Color(0xFFFDE8EE);
   static const _bg = Color(0xFFFFF0F5);
   static const _textPrimary = Color(0xFF2D2D2D);
-  static const _textSecondary = Color(0xFF9E9E9E);
 
   @override
   Widget build(BuildContext context) {
