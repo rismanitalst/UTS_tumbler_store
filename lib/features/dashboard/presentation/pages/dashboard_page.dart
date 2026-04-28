@@ -158,21 +158,43 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                 ],
                               ),
-                              GestureDetector(
-                                onTap: _handleLogout,
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white
-                                        .withValues(alpha: 0.25),
-                                    borderRadius: BorderRadius.circular(14),
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => const ProfilePage()),
+                                    ),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withValues(alpha: 0.25),
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                      child: const Icon(
+                                        Icons.person_rounded,
+                                        color: Colors.white,
+                                        size: 18,
+                                      ),
+                                    ),
                                   ),
-                                  child: const Icon(
-                                    Icons.logout_rounded,
-                                    color: Colors.white,
-                                    size: 18,
+                                  const SizedBox(width: 8),
+                                  GestureDetector(
+                                    onTap: _handleLogout,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withValues(alpha: 0.25),
+                                        borderRadius: BorderRadius.circular(14),
+                                      ),
+                                      child: const Icon(
+                                        Icons.logout_rounded,
+                                        color: Colors.white,
+                                        size: 18,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             ],
                           ),
