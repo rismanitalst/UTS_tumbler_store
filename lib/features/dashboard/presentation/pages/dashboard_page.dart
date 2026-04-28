@@ -4,6 +4,7 @@ import 'package:tumbler_store/core/routes/app_router.dart';
 import 'package:tumbler_store/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tumbler_store/features/dashboard/data/models/product_models.dart';
 import 'package:tumbler_store/features/dashboard/presentation/pages/product_detail_page.dart';
+import 'package:tumbler_store/features/dashboard/presentation/pages/profile_page.dart';
 
 import '../providers/product_provider.dart';
 
