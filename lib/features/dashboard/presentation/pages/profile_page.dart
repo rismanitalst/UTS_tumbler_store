@@ -85,7 +85,14 @@ class ProfilePage extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        name.isNotEmpty ? name[0].toUpperCase() : 'U',
+                        name.isNotEmpty
+                          ? name
+                              .trim()
+                              .split(' ')
+                              .take(2)
+                              .map((e) => e[0].toUpperCase())
+                              .join()
+                          : 'U',
                         style: const TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.w700,
