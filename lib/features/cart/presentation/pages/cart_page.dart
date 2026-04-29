@@ -8,7 +8,6 @@ class CartPage extends StatelessWidget {
 
   static const _pink = Color(0xFFE8829A);
   static const _pinkLight = Color(0xFFFDE8EE);
-  static const _pinkDusty = Color(0xFFF9D0DA);
   static const _bg = Color(0xFFFFF0F5);
   static const _textPrimary = Color(0xFF2D2D2D);
 
