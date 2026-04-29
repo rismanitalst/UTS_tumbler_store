@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tumbler_store/features/dashboard/data/models/product_models.dart';
+import 'package:provider/provider.dart';
+import 'package:tumbler_store/features/cart/presentation/providers/cart_provider.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final ProductModel product;
@@ -226,7 +228,21 @@ class ProductDetailPage extends StatelessWidget {
                     width: double.infinity,
                     height: 54,
                     child: ElevatedButton(
-                      onPressed: product.stock > 0 ? () {} : null,
+                      onPressed: product.stock > 0
+                        ? () {
+                            context.read<CartProvider>().addItem(product);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('${product.name} ditambahkan ke keranjang'),
+                                backgroundColor: _pink,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                duration: const Duration(seconds: 1),
+                              ),
+                            );
+                          }
+                        : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _pink,
                         disabledBackgroundColor: Colors.grey.shade200,
