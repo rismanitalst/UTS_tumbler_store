@@ -142,7 +142,7 @@ class CartPage extends StatelessWidget {
                 ),
               ),
               Text(
-                'Rp ${cart.totalPrice.toStringAsFixed(0)}',
+                cart.totalPrice.toRupiah(),
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w800,
@@ -278,7 +278,7 @@ class _CartItemCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Rp ${item.product.price.toStringAsFixed(0)}',
+                  item.product.price.toRupiah(),
                   style: const TextStyle(
                     color: _pink,
                     fontWeight: FontWeight.w700,
