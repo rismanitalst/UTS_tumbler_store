@@ -5,6 +5,8 @@ import 'package:tumbler_store/features/auth/presentation/providers/auth_provider
 import 'package:tumbler_store/features/dashboard/data/models/product_models.dart';
 import 'package:tumbler_store/features/dashboard/presentation/pages/product_detail_page.dart';
 import 'package:tumbler_store/features/dashboard/presentation/pages/profile_page.dart';
+import 'package:tumbler_store/features/cart/presentation/pages/cart_page.dart';
+import 'package:tumbler_store/features/cart/presentation/providers/cart_provider.dart';
 
 import '../providers/product_provider.dart';
 
@@ -59,13 +61,6 @@ class _DashboardPageState extends State<DashboardPage> {
   List<String> _getCategories(List<ProductModel> products) {
     final cats = products.map((p) => p.category).toSet().toList();
     return ['Semua', ...cats];
-  }
-
-  Future<void> _handleLogout() async {
-    final auth = context.read<AuthProvider>();
-    await auth.logout();
-    if (!mounted) return;
-    Navigator.pushReplacementNamed(context, AppRouter.login);
   }
 
   @override
@@ -181,17 +176,45 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                   const SizedBox(width: 8),
                                   GestureDetector(
-                                    onTap: _handleLogout,
+                                    onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => const CartPage()),
+                                    ),
                                     child: Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                         color: Colors.white.withValues(alpha: 0.25),
                                         borderRadius: BorderRadius.circular(14),
                                       ),
-                                      child: const Icon(
-                                        Icons.logout_rounded,
-                                        color: Colors.white,
-                                        size: 18,
+                                      child: Stack(
+                                        clipBehavior: Clip.none,
+                                        children: [
+                                          const Icon(Icons.shopping_cart_rounded, color: Colors.white, size: 18),
+                                          Positioned(
+                                            top: -6,
+                                            right: -6,
+                                            child: Consumer<CartProvider>(
+                                              builder: (context, cart, _) {
+                                                if (cart.totalItems == 0) return const SizedBox();
+                                                return Container(
+                                                  padding: const EdgeInsets.all(3),
+                                                  decoration: const BoxDecoration(
+                                                    color: Colors.white,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Text(
+                                                    '${cart.totalItems}',
+                                                    style: const TextStyle(
+                                                      color: _pink,
+                                                      fontSize: 9,
+                                                      fontWeight: FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
