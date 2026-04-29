@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tumbler_store/core/routes/app_router.dart';
 import 'package:tumbler_store/features/auth/presentation/providers/auth_provider.dart';
 import 'package:tumbler_store/features/dashboard/data/models/product_models.dart';
 import 'package:tumbler_store/features/dashboard/presentation/pages/product_detail_page.dart';
@@ -433,7 +432,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 0.68,
+                        childAspectRatio: 0.62,
                         crossAxisSpacing: 12,
                         mainAxisSpacing: 12,
                       ),
@@ -461,9 +460,7 @@ class _ProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (_) => ProductDetailPage(product: p),
-        ),
+        MaterialPageRoute(builder: (_) => ProductDetailPage(product: p)),
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -481,8 +478,7 @@ class _ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
               child: AspectRatio(
                 aspectRatio: 1,
                 child: Image.network(
@@ -491,8 +487,7 @@ class _ProductCard extends StatelessWidget {
                   errorBuilder: (_, __, ___) => Container(
                     color: _pinkLight,
                     child: const Center(
-                      child: Icon(Icons.local_drink_outlined,
-                          size: 36, color: _pink),
+                      child: Icon(Icons.local_drink_outlined, size: 36, color: _pink),
                     ),
                   ),
                 ),
@@ -529,21 +524,54 @@ class _ProductCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: _pinkLight,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            p.category,
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: _pink,
-                              fontWeight: FontWeight.w500,
+                        // ✅ category kiri, cart icon kanan
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: _pinkLight,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                p.category,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  color: _pink,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
-                          ),
+                            GestureDetector(
+                              onTap: () {
+                                context.read<CartProvider>().addItem(p);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('${p.name} ditambahkan ke keranjang'),
+                                    backgroundColor: _pink,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10)),
+                                    duration: const Duration(seconds: 1),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(7),
+                                decoration: BoxDecoration(
+                                  color: _pink,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Icon(
+                                  Icons.shopping_cart_rounded,
+                                  size: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

@@ -1,5 +1,3 @@
-// lib/features/cart/presentation/providers/cart_provider.dart
-
 import 'package:flutter/material.dart';
 import 'package:tumbler_store/features/dashboard/data/models/product_models.dart';
 
