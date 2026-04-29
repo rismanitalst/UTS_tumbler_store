@@ -6,6 +6,7 @@ import 'package:tumbler_store/features/dashboard/presentation/pages/product_deta
 import 'package:tumbler_store/features/dashboard/presentation/pages/profile_page.dart';
 import 'package:tumbler_store/features/cart/presentation/pages/cart_page.dart';
 import 'package:tumbler_store/features/cart/presentation/providers/cart_provider.dart';
+import 'package:tumbler_store/core/extensions/number_extension.dart';
 
 import '../providers/product_provider.dart';
 
@@ -515,7 +516,7 @@ class _ProductCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Rp ${p.price.toStringAsFixed(0)}',
+                          p.price.toRupiah(),
                           style: const TextStyle(
                             color: _pink,
                             fontWeight: FontWeight.w700,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tumbler_store/features/dashboard/data/models/product_models.dart';
 import 'package:provider/provider.dart';
 import 'package:tumbler_store/features/cart/presentation/providers/cart_provider.dart';
+import 'package:tumbler_store/core/extensions/number_extension.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final ProductModel product;
@@ -156,7 +157,7 @@ class ProductDetailPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Rp ${product.price.toStringAsFixed(0)}',
+                        product.price.toRupiah(),
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w800,

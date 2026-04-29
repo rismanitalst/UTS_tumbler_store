@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tumbler_store/features/cart/presentation/pages/checkout_page.dart';
 import 'package:tumbler_store/features/cart/presentation/providers/cart_provider.dart';
+import 'package:tumbler_store/core/extensions/number_extension.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
