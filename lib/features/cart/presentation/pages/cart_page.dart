@@ -115,74 +115,101 @@ class CartPage extends StatelessWidget {
   }
 
   Widget _buildSummary(BuildContext context, CartProvider cart) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.pink.withValues(alpha: 0.08),
-            blurRadius: 20,
-            offset: const Offset(0, -6),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Total',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: _textPrimary,
+  return Container(
+    padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.pink.withValues(alpha: 0.08),
+          blurRadius: 20,
+          offset: const Offset(0, -6),
+        ),
+      ],
+    ),
+    child: Column(
+      children: [
+        // Select all row
+        Row(
+          children: [
+            GestureDetector(
+              onTap: () => cart.toggleSelectAll(),
+              child: Container(
+                width: 22,
+                height: 22,
+                decoration: BoxDecoration(
+                  color: cart.allSelected ? _pink : Colors.white,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                    color: cart.allSelected ? _pink : Colors.grey.shade300,
+                    width: 1.5,
+                  ),
                 ),
+                child: cart.allSelected
+                    ? const Icon(Icons.check_rounded, size: 14, color: Colors.white)
+                    : null,
               ),
-              Text(
-                cart.totalPrice.toRupiah(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: _pink,
-                  letterSpacing: -0.5,
-                ),
+            ),
+            const SizedBox(width: 10),
+            const Text(
+              'Semua',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const Spacer(),
+            const Text(
+              'Total',
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              cart.totalPrice.toRupiah(),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
+                color: _pink,
+                letterSpacing: -0.5,
               ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            height: 52,
-            child: ElevatedButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const CheckoutPage()),
+            ),
+          ],
+        ),
+        const SizedBox(height: 14),
+        SizedBox(
+          width: double.infinity,
+          height: 52,
+          child: ElevatedButton(
+            onPressed: cart.selectedItems.isEmpty
+                ? null
+                : () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const CheckoutPage()),
+                    ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: _pink,
+              disabledBackgroundColor: Colors.grey.shade200,
+              disabledForegroundColor: Colors.grey.shade400,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _pink,
-                foregroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              child: const Text(
-                'Checkout',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.3,
-                ),
+            ),
+            child: Text(
+              cart.selectedItems.isEmpty
+                  ? 'Pilih produk dulu'
+                  : 'Checkout (${cart.selectedCount} produk)',
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
   void _confirmClear(BuildContext context, CartProvider cart) {
     showDialog(
@@ -245,6 +272,27 @@ class _CartItemCard extends StatelessWidget {
       ),
       child: Row(
         children: [
+          // Checkbox
+          GestureDetector(
+            onTap: () => cart.toggleSelect(item.product.id),
+            child: Container(
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                color: item.isSelected ? _pink : Colors.white,
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(
+                  color: item.isSelected ? _pink : Colors.grey.shade300,
+                  width: 1.5,
+                ),
+              ),
+              child: item.isSelected
+                  ? const Icon(Icons.check_rounded, size: 14, color: Colors.white)
+                  : null,
+            ),
+          ),
+          const SizedBox(width: 10),
+          // Gambar
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
@@ -256,8 +304,7 @@ class _CartItemCard extends StatelessWidget {
                 width: 72,
                 height: 72,
                 color: _pinkLight,
-                child: const Icon(Icons.local_drink_outlined,
-                    color: _pink, size: 28),
+                child: const Icon(Icons.local_drink_outlined, color: _pink, size: 28),
               ),
             ),
           ),
@@ -291,7 +338,6 @@ class _CartItemCard extends StatelessWidget {
           const SizedBox(width: 8),
           Column(
             children: [
-              // Hapus item
               GestureDetector(
                 onTap: () => cart.removeItem(item.product.id),
                 child: Container(
@@ -300,12 +346,10 @@ class _CartItemCard extends StatelessWidget {
                     color: _pinkLight,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(Icons.delete_outline_rounded,
-                      color: _pink, size: 16),
+                  child: const Icon(Icons.delete_outline_rounded, color: _pink, size: 16),
                 ),
               ),
               const SizedBox(height: 8),
-              // Quantity control
               Row(
                 children: [
                   _QtyButton(
