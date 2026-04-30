@@ -72,7 +72,7 @@ class CheckoutPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      ...cart.items.asMap().entries.map((entry) {
+                      ...cart.selectedItems.asMap().entries.map((entry) {
                         final i = entry.key;
                         final item = entry.value;
                         final isLast = i == cart.items.length - 1;
@@ -195,7 +195,7 @@ class CheckoutPage extends StatelessWidget {
                       ),
                       _PriceRow(
                         label: 'Total',
-                        value: 'Rp ${cart.totalPrice.toStringAsFixed(0)}',
+                        value: cart.totalPrice.toRupiah(),
                         isBold: true,
                       ),
                     ],
