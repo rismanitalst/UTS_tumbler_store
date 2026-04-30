@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tumbler_store/features/cart/presentation/providers/cart_provider.dart';
+import 'package:tumbler_store/core/extensions/number_extension.dart';
 
 class CheckoutPage extends StatelessWidget {
   const CheckoutPage({super.key});
@@ -117,7 +118,7 @@ class CheckoutPage extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          '${item.quantity}x  Rp ${item.product.price.toStringAsFixed(0)}',
+                                          '${item.quantity}x  ${item.product.price.toRupiah()}',
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: Color(0xFF9E9E9E),
@@ -127,7 +128,7 @@ class CheckoutPage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Rp ${item.subtotal.toStringAsFixed(0)}',
+                                    item.subtotal.toRupiah(),
                                     style: const TextStyle(
                                       color: _pink,
                                       fontWeight: FontWeight.w700,
@@ -180,7 +181,7 @@ class CheckoutPage extends StatelessWidget {
                     children: [
                       _PriceRow(
                         label: 'Subtotal (${cart.totalItems} item)',
-                        value: 'Rp ${cart.totalPrice.toStringAsFixed(0)}',
+                        value: cart.totalPrice.toRupiah(),
                       ),
                       const SizedBox(height: 8),
                       _PriceRow(
@@ -233,7 +234,7 @@ class CheckoutPage extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Bayar  •  Rp ${cart.totalPrice.toStringAsFixed(0)}',
+                  'Bayar  •  ${cart.totalPrice.toRupiah()}',
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
